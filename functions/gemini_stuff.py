@@ -1,9 +1,6 @@
-from dotenv import load_dotenv
 from google import genai
 from typing import Literal, Union
 import os, json, base64
-
-load_dotenv()
 
 UserTrashInfo = dict[Literal["num_trash_bins", "region", "comments"], Union[int, str]]
 BinInfo = dict[Literal["title", "description", "count"], Union[str, int]]
