@@ -90,8 +90,7 @@ export default function Home() {
     }
   }, [bins]);
 
-  const handleSetup = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSetup = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -106,8 +105,9 @@ export default function Home() {
     } catch (err) {
       setError("Failed to generate bin plan. Please try again.");
       console.error(err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleCapture = useCallback(async (base64: string) => {
@@ -163,7 +163,7 @@ export default function Home() {
             </>
           ) : (
               <p className="text-black text-center">
-              Hold your trash up in front of the camera and click the button to have your trash identified.
+              Hold your trash up in front of the camera and click the button to have your trash sorted.
             </p>
           )}
         </div>
@@ -194,7 +194,7 @@ export default function Home() {
       </div>
 
       {bins.length === 0 ? (
-        <form onSubmit={handleSetup} className="space-y-8">
+        <div className="space-y-8">
           <div>
             <label className="block text-sm font-medium mb-2">
               Number of Bins
@@ -230,7 +230,7 @@ export default function Home() {
               <textarea
                 value={comments}
                 onChange={(e) => setComments(e.target.value)}
-                placeholder="Any additional information about your facility or requirements..."
+                placeholder="One of my bins is extra large. These bins will be in a food court."
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                 rows={4}
               />
@@ -238,13 +238,14 @@ export default function Home() {
           </div>
 
           <button
-            type="submit"
+            type="button"
+            onClick={handleSetup}
             disabled={loading}
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:opacity-50"
           >
             {loading ? "Generating Plan..." : "Generate Bin Plan"}
           </button>
-        </form>
+        </div>
       ) : (
         <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
